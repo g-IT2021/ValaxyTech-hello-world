@@ -36,4 +36,26 @@ pipeline {
         }
     }
 }
+        SONARSCANNER = 'sonarscanner'
+    }
+    stages {
+        stage('build'){
+            steps {
+                sh 'mvn -DskipTests install'
+            }
+            post {
+                success {
+                    echo "Now Archiving"
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
+            }
+        }
+    }
+    stage('test'){
+        steps{
+            sh 'mvn test -DskipInstall'
+        }
+    }
+}
+
 
